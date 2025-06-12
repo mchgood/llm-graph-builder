@@ -1,0 +1,25 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Git checkout the code.
+        uses: actions/checkout@v3
+      - name: Build the docker images.
+        run: docker compose build --progress plain
+      - name: push images to aliyun docker hub
+        run: |
+          # 登录阿里云镜像
+          docker login -u $ALIYUN_REGISTRY_USER -p $ALIYUN_REGISTRY_PASSWORD $ALIYUN_REGISTRY
+          docker tag ${{matrix.dockertag}} $ALIYUN_REGISTRY/$ALIYUN_NAME_SPACE/${{matrix.dockerhubtag}}:$IMG_TAG
+          docker push $ALIYUN_REGISTRY/$ALIYUN_NAME_SPACE/${{matrix.dockerhubtag}}:$IMG_TAG
