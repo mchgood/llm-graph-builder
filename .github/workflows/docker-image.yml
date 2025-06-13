@@ -38,7 +38,8 @@ jobs:
           file: ./backend/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.IMAGE_NAME_BACKEND }}:${{ env.IMAGE_TAG }}
-
+          platforms: linux/amd64,linux/arm64
+          
       - name: Build and push frontend image
         uses: docker/build-push-action@v6
         with:
@@ -46,3 +47,5 @@ jobs:
           file: ./frontend/Dockerfile
           push: true
           tags:  ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.IMAGE_NAME_FRONTEND }}:${{ env.IMAGE_TAG }}
+          platforms: linux/amd64,linux/arm64
+          
